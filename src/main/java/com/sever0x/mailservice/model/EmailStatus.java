@@ -1,4 +1,4 @@
-package com.sever0x.emailservice.model;
+package com.sever0x.mailservice.model;
 
 public enum EmailStatus {
     SENT, FAILED

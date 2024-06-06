@@ -1,4 +1,4 @@
-package com.sever0x.emailservice.config;
+package com.sever0x.mailservice.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

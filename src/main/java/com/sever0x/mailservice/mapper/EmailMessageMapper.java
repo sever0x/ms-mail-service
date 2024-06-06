@@ -1,7 +1,7 @@
-package com.sever0x.emailservice.mapper;
+package com.sever0x.mailservice.mapper;
 
-import com.sever0x.emailservice.dto.EmailMessageDto;
-import com.sever0x.emailservice.model.EmailMessage;
+import com.sever0x.mailservice.dto.EmailMessageDto;
+import com.sever0x.mailservice.model.EmailMessage;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 

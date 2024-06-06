@@ -1,4 +1,4 @@
-package com.sever0x.emailservice.dto;
+package com.sever0x.mailservice.dto;
 
 import lombok.Data;
 

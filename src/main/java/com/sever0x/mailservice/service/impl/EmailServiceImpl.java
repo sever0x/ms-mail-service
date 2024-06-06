@@ -1,10 +1,10 @@
-package com.sever0x.emailservice.service.impl;
+package com.sever0x.mailservice.service.impl;
 
-import com.sever0x.emailservice.dto.EmailMessageDto;
-import com.sever0x.emailservice.mapper.EmailMessageMapper;
-import com.sever0x.emailservice.model.EmailStatus;
-import com.sever0x.emailservice.repository.EmailMessageRepository;
-import com.sever0x.emailservice.service.EmailService;
+import com.sever0x.mailservice.dto.EmailMessageDto;
+import com.sever0x.mailservice.mapper.EmailMessageMapper;
+import com.sever0x.mailservice.model.EmailStatus;
+import com.sever0x.mailservice.repository.EmailMessageRepository;
+import com.sever0x.mailservice.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

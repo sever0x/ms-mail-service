@@ -1,6 +1,6 @@
-package com.sever0x.emailservice.service;
+package com.sever0x.mailservice.service;
 
-import com.sever0x.emailservice.dto.EmailMessageDto;
+import com.sever0x.mailservice.dto.EmailMessageDto;
 
 public interface EmailService {
 
