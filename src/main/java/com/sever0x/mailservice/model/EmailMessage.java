@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Document(indexName = "emailMessages")
+@Document(indexName = "email-messages")
 public class EmailMessage {
 
     @Id

@@ -1,17 +1,25 @@
 package com.sever0x.mailservice.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class EmailMessageDto {
     private String subject;
+
     private String content;
+
     private List<String> recipients;
+
     private String status;
+
     private String errorMessage;
+
     private int attempt;
-    private LocalDateTime lastAttemptTim;
+
+    private LocalDateTime lastAttemptTime;
 }
