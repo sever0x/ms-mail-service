@@ -1,7 +1,8 @@
 package com.sever0x.mailservice.service.impl;
 
-import com.sever0x.mailservice.dto.EmailMessageDto;
+import com.sever0x.mailservice.messaging.EmailReceivedMessage;
 import com.sever0x.mailservice.mapper.EmailMessageMapper;
+import com.sever0x.mailservice.model.EmailMessage;
 import com.sever0x.mailservice.model.EmailStatus;
 import com.sever0x.mailservice.repository.EmailMessageRepository;
 import com.sever0x.mailservice.service.EmailService;
@@ -21,20 +22,22 @@ public class EmailServiceImpl implements EmailService {
     private final EmailMessageRepository emailMessageRepository;
 
     @Override
-    public void sendEmail(EmailMessageDto dto) {
+    public void sendEmail(EmailReceivedMessage receivedMessage) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject(dto.getSubject());
-        message.setText(dto.getContent());
-        message.setTo(dto.getRecipients().toArray(new String[0]));
+        message.setSubject(receivedMessage.getSubject());
+        message.setText(receivedMessage.getContent());
+        message.setTo(receivedMessage.getRecipients().toArray(new String[0]));
+
+        EmailMessage entityMessage = emailMessageMapper.messageToEntity(receivedMessage);
 
         try {
             mailSender.send(message);
-            dto.setStatus(EmailStatus.SENT.name());
+            entityMessage.setStatus(EmailStatus.SENT);
         } catch (Exception e) {
-            dto.setStatus(EmailStatus.FAILED.name());
-            dto.setErrorMessage(e.getMessage());
+            entityMessage.setStatus(EmailStatus.FAILED);
+            entityMessage.setErrorMessage(e.getMessage());
         }
 
-        emailMessageRepository.save(emailMessageMapper.dtoToEntity(dto));
+        emailMessageRepository.save(entityMessage);
     }
 }
