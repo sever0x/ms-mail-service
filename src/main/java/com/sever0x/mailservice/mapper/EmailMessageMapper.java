@@ -9,4 +9,6 @@ import org.mapstruct.MappingConstants;
 public interface EmailMessageMapper {
 
     EmailMessage messageToEntity(EmailReceivedMessage dto);
+
+    EmailReceivedMessage entityToMessage(EmailMessage entity);
 }

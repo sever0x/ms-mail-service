@@ -14,6 +14,6 @@ public class EmailServiceListener {
 
     @KafkaListener(topics = "${kafka.topic.email.service}")
     public void sendEmail(EmailReceivedMessage message) {
-        emailService.sendEmail(message);
+        emailService.processReceivedMessage(message);
     }
 }
