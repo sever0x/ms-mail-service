@@ -1,6 +1,27 @@
 version: "3.9"
 
 services:
+  emailservice:
+    container_name: emailservice
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - "8090:8090"
+    environment:
+      ES_ADDRESS: elasticsearch:9200
+      KAFKA_ADDRESS: kafka:9092
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - ms-email-network
   elasticsearch:
     image: elasticsearch:8.6.1
     container_name: elasticsearch
@@ -12,6 +33,13 @@ services:
       - ./data:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
+    networks:
+      - ms-email-network
+    healthcheck:
+      test: curl -s http://elasticsearch:9200 >/dev/null || exit 1
+      interval: 30s
+      timeout: 10s
+      retries: 50
 
   kibana:
     image: kibana:8.6.1
@@ -20,6 +48,8 @@ services:
       - "5601:5601"
     depends_on:
       - elasticsearch
+    networks:
+      - ms-email-network
 
   zookeeper:
     image: 'bitnami/zookeeper:latest'
@@ -28,16 +58,25 @@ services:
       - '2181:2181'
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+    networks:
+      - ms-email-network
   kafka:
     image: 'bitnami/kafka:latest'
     container_name: kafka
     ports:
       - '9092:9092'
+      - '29092:29092'
     environment:
       - KAFKA_BROKER_ID=1
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
       - zookeeper
+    networks:
+      - ms-email-network
+
+networks:
+  ms-email-network:
